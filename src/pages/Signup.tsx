@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'react-hot-toast';
 import type RegisterData from '@/models/Registerdata';
-import registerUser from '@/Services/AuthService';
+import {registerUser} from '@/Services/AuthService';
 
 import {
   Card,
@@ -26,7 +26,7 @@ export default function SignupPage() {
   });
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -47,13 +47,16 @@ export default function SignupPage() {
     console.log(data);
 
     if (data.name.trim() === "") {
-      toast.error("Name is required");
+      toast.error("Name is required!");
+      return;
     }
     if (data.email.trim() === "") {
-      toast.error("Name is required");
+      toast.error("Email is required!");
+      return;
     }
     if (data.password.trim() === "") {
-      toast.error("Name is required");
+      toast.error("Password is required!");
+      return;
     }
     try {
       const result = await registerUser(data);
@@ -66,7 +69,7 @@ export default function SignupPage() {
       })
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.dir(error);
       toast.error("Something went wrong");
     }
   }

@@ -8,6 +8,7 @@ import About from './pages/About.tsx'
 import Login from './pages/Login.tsx'
 import Services from './pages/Services.tsx'
 import Signup from './pages/Signup.tsx'
+import Userlayout from './pages/User/Userlayout.tsx'
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
@@ -18,7 +19,8 @@ createRoot(document.getElementById('root')!).render(
                 <Route path='/login' element={<Login />}></Route>
                 <Route path='/signup' element={<Signup />}></Route>
                 <Route path='/services' element={<Services />}></Route>
-                <Route path='/about' element={<About />}></Route>          
+                <Route path='/about' element={<About />}></Route>     
+                <Route path='/dashboard' element={<Userlayout />}></Route>     
 
             </Route>
         </Routes>

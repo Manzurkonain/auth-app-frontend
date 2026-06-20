@@ -1,7 +1,11 @@
 import { NavLink } from "react-router";
 import { Button } from "./ui/button";
+import useAuth from "@/auth/store";
 
 export default function Navbar() {
+  const checkLogin = useAuth().checkLogin;
+  const user = useAuth(state => state.user);
+  const logout = useAuth(state => state.logout);
   return (
     <nav
       className="
@@ -35,30 +39,56 @@ export default function Navbar() {
 
           {/* Navigation */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `text-sm transition-colors ${
-                  isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`
-              }
-            >
-              Home
-            </NavLink>
+            {
+              checkLogin() ? (
+                <>
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      `text-sm transition-colors ${isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                      }`
+                    }
+                  >
+                    {user?.name}
+                  </NavLink>
 
-            <NavLink to="/login">
-              <Button variant="outline" size="sm">
-                Login
-              </Button>
-            </NavLink>
+                  <NavLink to="/logout">
+                    <Button variant="outline" size="sm" onClick={() => logout()}>
+                      LogOut
+                    </Button>
+                  </NavLink>
 
-            <NavLink to="/signup">
-              <Button size="sm">
-                Sign Up
-              </Button>
-            </NavLink>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      `text-sm transition-colors ${isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                      }`
+                    }
+                  >
+                    Home
+                  </NavLink>
+
+                  <NavLink to="/login">
+                    <Button variant="outline" size="sm">
+                      Login
+                    </Button>
+                  </NavLink>
+
+                  <NavLink to="/signup">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </NavLink>
+                </>
+              )
+            }
           </div>
         </div>
       </div>
