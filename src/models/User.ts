@@ -3,7 +3,7 @@ export default interface User{
     email: string;
     name?: string;
     enable: boolean;
-    image?: string;
+    image?: string | null;
     updatedAt?: string;
     createdAt?: string;
     provider?: string;

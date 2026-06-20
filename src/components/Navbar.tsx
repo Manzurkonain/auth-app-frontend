@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { Button } from "./ui/button";
 import useAuth from "@/auth/store";
 
@@ -6,6 +6,7 @@ export default function Navbar() {
   const checkLogin = useAuth().checkLogin;
   const user = useAuth(state => state.user);
   const logout = useAuth(state => state.logout);
+  const navigate = useNavigate();
   return (
     <nav
       className="
@@ -43,7 +44,7 @@ export default function Navbar() {
               checkLogin() ? (
                 <>
                   <NavLink
-                    to="/"
+                    to="/dashboard/profile"
                     className={({ isActive }) =>
                       `text-sm transition-colors ${isActive
                         ? "text-foreground"
@@ -54,11 +55,11 @@ export default function Navbar() {
                     {user?.name}
                   </NavLink>
 
-                  <NavLink to="/logout">
-                    <Button variant="outline" size="sm" onClick={() => logout()}>
+               
+                    <Button variant="outline" size="sm" onClick={() => { logout(); navigate("/") }}>
                       LogOut
                     </Button>
-                  </NavLink>
+                
 
                 </>
               ) : (

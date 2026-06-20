@@ -4,8 +4,10 @@ import type User from '@/models/User';
 import { loginUser, logoutUser } from '@/Services/AuthService';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import toast from 'react-hot-toast';
 
 const LOCAL_KEY = "auht_app";
+
 
 // type AythStatus = "idle" | "authenticating" | "authenticated" | "anonymous"; ;
 
@@ -18,6 +20,8 @@ type AuthState = {
     login: (loginData: LoginData) => Promise<LoginResponseData>;
     logout: (silent?: boolean) => void;
     checkLogin: () => boolean | undefined;
+
+    changeLocalLoginData : (accessToken:string,user:User,authStatus:boolean) => void;
 }
 
 
@@ -28,6 +32,14 @@ const useAuth = create<AuthState>()(
             user: null,
             authStatus: false,
             authLoading: false,
+
+            changeLocalLoginData : (access:string,user:User,authStatus:boolean) =>
+                
+                set({
+                accessToken: access,
+                user: user,
+                authStatus: authStatus,
+            }) ,
             login: async (loginData) => {
                 console.log("Started login");
                 set({ authLoading: true })
@@ -52,12 +64,15 @@ const useAuth = create<AuthState>()(
             logout: async () => {
                 try {
                     set({ authLoading: true }),
-                        await logoutUser();
-
+                    await logoutUser();
+                    toast.success("User logged out successfully");
+            
                 }
                 catch (error) { }
                 finally {
                     set({ authLoading: false })
+
+            
                 }
                 set({
                     accessToken: null,
@@ -71,10 +86,12 @@ const useAuth = create<AuthState>()(
                 else return false
             }
 
+            
         }),
         {
             name: LOCAL_KEY,
         }
+
     ));
 
 export default useAuth

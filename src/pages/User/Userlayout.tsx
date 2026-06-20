@@ -1,11 +1,18 @@
-import React from 'react'
+import useAuth from '@/auth/store'
+import { Navigate, Outlet } from 'react-router'
 
 function Userlayout() {
+
+    const checkLogin = useAuth(state => state.checkLogin);
+   if(checkLogin()) 
     return (
         <div>
-            <h1>User Dashboard</h1>
-            <p>Welcome to your dashboard!</p>
+           <Outlet />
         </div>
+    )
+    else 
+    return (
+        <Navigate to="/login" />
     )
 }
 
